@@ -4,7 +4,7 @@ Simple way to send Tile and Toast notifications for your application
 
 # Usager
 
-```charp
+```csharp
 
 const string httpNotification = @"yourURL";
 	
