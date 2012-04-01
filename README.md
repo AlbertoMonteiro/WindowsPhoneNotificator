@@ -33,7 +33,7 @@ const string httpNotification = @"yourURL";
 	
 var notification = new ToastNotification
 {
-	Tile = new Tile
+	Toast = new Toast
 	{
 	    Test1 = "Abc",
 	    Test2 = "Def",
