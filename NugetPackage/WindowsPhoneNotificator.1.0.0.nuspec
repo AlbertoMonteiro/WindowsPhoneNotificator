@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <version>1.0.0</version>
+    <authors>Alberto Monteiro</authors>
+    <owners>Alberto Monteiro</owners>
+    <id>WindowsPhoneNotificator</id>
+    <title>Windows Phone Notificator</title>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Library to easily send Tile and Toast notification to your application from Windows Phone.</description>
+  </metadata>
+  <files>
+    <file src="..\WindowsPhoneNotificator\bin\Release\WindowsPhoneNotificator.dll" target="lib\WindowsPhoneNotificator.dll" />
+  </files>
+</package>
