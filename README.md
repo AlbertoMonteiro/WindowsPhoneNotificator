@@ -4,6 +4,14 @@ Simple way to send Tile and Toast notifications for your application
 
 # How to use
 
+## Instaling
+
+To install Windows Phone Notificator, run the following command in the [Package Manager Console](http://docs.nuget.org/docs/start-here/using-the-package-manager-console).
+
+```
+PM> Install-Package WindowsPhoneNotificator
+```
+
 ## Sending Tile notification
 
 ```csharp
