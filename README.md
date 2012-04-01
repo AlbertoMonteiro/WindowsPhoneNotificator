@@ -2,7 +2,7 @@
 
 Simple way to send Tile and Toast notifications for your application
 
-# Usager
+# How to use
 
 ```csharp
 
