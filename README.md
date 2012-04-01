@@ -21,5 +21,4 @@ var notification = new TileNotification
 var tileNotification = new WindowsPhoneNotification(notification, httpNotification);
 	
 tileNotification.SendNotification();
-
 ```
