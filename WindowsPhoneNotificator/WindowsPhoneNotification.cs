@@ -7,14 +7,15 @@ namespace WindowsPhoneNotificator
 {
     public class WindowsPhoneNotification
     {
+        private readonly string urlToNotify;
         private XmlSerializerNamespaces namespaces;
         private HttpWebRequest request;
 
         public WindowsPhoneNotification(string urlToNotify)
         {
+            this.urlToNotify = urlToNotify;
             namespaces = new XmlSerializerNamespaces();
             namespaces.Add("wp", "WPNotification");
-            BuildRequest(urlToNotify);
         }
 
         public WindowsPhoneNotification(Notification notification, string httpNotification)
@@ -31,8 +32,15 @@ namespace WindowsPhoneNotificator
             request.Method = "POST";
 
             request.ContentType = "text/xml";
-            request.Headers.Add("X-WindowsPhone-Target", "token");
-            request.Headers.Add("X-NotificationClass", "1");
+            if (Notification is TileNotification)
+            {
+                request.Headers.Add("X-WindowsPhone-Target", "token");
+                request.Headers.Add("X-NotificationClass", "1"); 
+            }else if (Notification is ToastNotification)
+            {
+                request.Headers.Add("X-WindowsPhone-Target", "toast");
+                request.Headers.Add("X-NotificationClass", "2"); 
+            }
         }
 
         private string GetXml()
@@ -51,6 +59,7 @@ namespace WindowsPhoneNotificator
 
         public WindowsPhoneNotificationResponse SendNotification()
         {
+            BuildRequest(urlToNotify);
             var xml = GetXml();
             byte[] message = Encoding.Default.GetBytes(xml);
             request.ContentLength = message.Length; 

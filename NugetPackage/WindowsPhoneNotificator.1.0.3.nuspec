@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>WindowsPhoneNotificator</id>
+        <version>1.0.3</version>
+        <title>Windows Phone Notificator</title>
+        <authors>Alberto Monteiro</authors>
+        <owners>Alberto Monteiro</owners>
+        <iconUrl>http://windowsphonesecrets.files.wordpress.com/2010/11/notification_01_thumb.jpg?w=480&amp;h=278</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Library to easily send Tile and Toast notification to your application from Windows Phone.</description>
+    </metadata>
+    <files>
+        <file src="..\WindowsPhoneNotificator\bin\Release\WindowsPhoneNotificator.dll" target="lib\WindowsPhoneNotificator.dll" />
+    </files>
+</package>
