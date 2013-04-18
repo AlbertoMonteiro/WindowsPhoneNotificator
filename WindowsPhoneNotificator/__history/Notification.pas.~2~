@@ -1,0 +1,26 @@
+namespace WindowsPhoneNotificator;
+
+interface
+
+uses
+  System.Runtime.InteropServices,
+  System.Xml.Serialization;
+
+type
+  INotification = public interface
+  end;
+
+
+  [ClassInterface(ClassInterfaceType.None)]
+  [Guid('D8BB9310-1EAF-4FF8-B421-9E3EE7301927')]
+  [ComVisible(true)]
+  [XmlRoot(ElementName := 'Notification', &Namespace := 'WPNotification')]
+  Notification = public class(INotification)
+  end;
+
+
+
+implementation
+
+
+end.

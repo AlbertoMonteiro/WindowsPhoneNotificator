@@ -1,0 +1,48 @@
+namespace WindowsPhoneNotificator;
+
+interface
+
+uses
+  System.Runtime.InteropServices,
+  System.Xml.Serialization;
+
+type
+  IToast = public interface
+    [XmlElement(&Namespace := 'WPNotification')]
+    property Text1: System.String read write;
+
+    [XmlElement(&Namespace := 'WPNotification')]
+    property Text2: System.String read write;
+
+    [XmlElement(ElementName := 'Param', &Namespace := 'WPNotification')]
+    property PathToOpen: System.String read write;
+  end;
+
+
+  [ClassInterface(ClassInterfaceType.None)]
+  [Guid('A83EBFB2-474E-4AB1-B22B-474937513236')]
+  [ComVisible(true)]
+  [XmlRoot(ElementName := 'Notification', &Namespace := 'WPNotification')]
+  Toast = public class(IToast)
+  public
+    constructor ;
+
+    [XmlElement(&Namespace := 'WPNotification')]
+    property Text1: System.String;
+    [XmlElement(&Namespace := 'WPNotification')]
+    property Text2: System.String;
+    [XmlElement(ElementName := 'Param', &Namespace := 'WPNotification')]
+    property PathToOpen: System.String;
+  end;
+
+
+implementation
+
+
+constructor Toast;
+begin
+
+
+end;
+
+end.

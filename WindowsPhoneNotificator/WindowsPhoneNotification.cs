@@ -1,21 +1,29 @@
 using System.IO;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Xml.Serialization;
 
 namespace WindowsPhoneNotificator
 {
-    public class WindowsPhoneNotification
+    [ClassInterface(ClassInterfaceType.None)]
+    [Guid("D9C3E9C9-C4A8-422A-8F78-C0A9C45D1670")]
+    [ComVisible(true)]
+    public class WindowsPhoneNotification : IWindowsPhoneNotification
     {
-        private readonly string urlToNotify;
-        private XmlSerializerNamespaces namespaces;
+        private readonly XmlSerializerNamespaces namespaces;
         private HttpWebRequest request;
 
-        public WindowsPhoneNotification(string urlToNotify)
+        public WindowsPhoneNotification()
         {
-            this.urlToNotify = urlToNotify;
             namespaces = new XmlSerializerNamespaces();
             namespaces.Add("wp", "WPNotification");
+        }
+
+        public WindowsPhoneNotification(string urlToNotify)
+            :this()
+        {
+            UrlToNotify = urlToNotify;
         }
 
         public WindowsPhoneNotification(Notification notification, string httpNotification)
@@ -24,22 +32,48 @@ namespace WindowsPhoneNotificator
             Notification = notification;
         }
 
-        protected Notification Notification { get; set; }
+        public string UrlToNotify { get; set; }
+
+        public Notification Notification { get; set; }
+
+        public WindowsPhoneNotificationResponse SendNotification()
+        {
+            BuildRequest(UrlToNotify);
+            string xml = GetXml();
+            byte[] message = Encoding.Default.GetBytes(xml);
+            request.ContentLength = message.Length;
+            using (Stream stream = request.GetRequestStream())
+            {
+                stream.Write(message, 0, message.Length);
+                stream.Close();
+            }
+
+            var response = (HttpWebResponse) request.GetResponse();
+
+            return new WindowsPhoneNotificationResponse
+            {
+                NotificationStatus = response.Headers["X-NotificationStatus"],
+                ChannelStatus = response.Headers["X-SubscriptionStatus"],
+                DeviceStatus = response.Headers["X-DeviceConnectionStatus"],
+                Response = response
+            };
+        }
 
         private void BuildRequest(string urlToNotify)
         {
-            request = (HttpWebRequest)WebRequest.Create(urlToNotify);
+            request = (HttpWebRequest) WebRequest.Create(urlToNotify);
             request.Method = "POST";
 
             request.ContentType = "text/xml";
             if (Notification is TileNotification)
             {
                 request.Headers.Add("X-WindowsPhone-Target", "token");
-                request.Headers.Add("X-NotificationClass", "1"); 
-            }else if (Notification is ToastNotification)
+                request.Headers.Add("X-NotificationClass", "1");
+            }
+            else if (Notification is ToastNotification)
             {
                 request.Headers.Add("X-WindowsPhone-Target", "toast");
-                request.Headers.Add("X-NotificationClass", "2"); 
+                request.Headers.Add("X-NotificationClass", "2");
             }
         }
 
@@ -55,28 +89,6 @@ namespace WindowsPhoneNotificator
                     retorno = stream.ReadToEnd();
             }
             return retorno;
-        }
-
-        public WindowsPhoneNotificationResponse SendNotification()
-        {
-            BuildRequest(urlToNotify);
-            var xml = GetXml();
-            byte[] message = Encoding.Default.GetBytes(xml);
-            request.ContentLength = message.Length; 
-            using (var stream = request.GetRequestStream())
-            {
-                stream.Write(message, 0, message.Length);
-                stream.Close();
-            }
-
-            var response = (HttpWebResponse)request.GetResponse();
-
-            return new WindowsPhoneNotificationResponse
-            {
-                NotificationStatus = response.Headers["X-NotificationStatus"],
-                ChannelStatus = response.Headers["X-SubscriptionStatus"],
-                DeviceStatus = response.Headers["X-DeviceConnectionStatus"],
-            };
         }
     }
 }

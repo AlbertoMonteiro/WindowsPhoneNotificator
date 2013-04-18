@@ -1,10 +1,14 @@
 using System;
+using System.Runtime.InteropServices;
 using System.Xml.Serialization;
 
 namespace WindowsPhoneNotificator
 {
+    [ClassInterface(ClassInterfaceType.None)]
+    [Guid("20D54DD9-9EEC-4A8D-99FB-7899225511A3")]
+    [ComVisible(true)]
     [XmlRoot(ElementName = "Tile", Namespace = "WPNotification")]
-    public class Tile
+    public class Tile : ITile
     {
         private int count;
 
