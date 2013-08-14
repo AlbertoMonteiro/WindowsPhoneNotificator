@@ -21,7 +21,7 @@ namespace WindowsPhoneNotificator
         }
 
         public WindowsPhoneNotification(string urlToNotify)
-            :this()
+            : this()
         {
             UrlToNotify = urlToNotify;
         }
@@ -48,20 +48,34 @@ namespace WindowsPhoneNotificator
                 stream.Close();
             }
 
-            var response = (HttpWebResponse) request.GetResponse();
+            try
+            {
+                var response = (HttpWebResponse)request.GetResponse();
+                return CreateResponse(response);
 
+            }
+            catch (WebException exception)
+            {
+                return CreateResponse(exception.Response);
+            }
+        }
+
+        private static WindowsPhoneNotificationResponse CreateResponse(WebResponse response)
+        {
+            var httpWebResponse = (HttpWebResponse) response;
             return new WindowsPhoneNotificationResponse
             {
-                NotificationStatus = response.Headers["X-NotificationStatus"],
-                ChannelStatus = response.Headers["X-SubscriptionStatus"],
-                DeviceStatus = response.Headers["X-DeviceConnectionStatus"],
-                Response = response
+                NotificationStatus = httpWebResponse.Headers["X-NotificationStatus"],
+                ChannelStatus = httpWebResponse.Headers["X-SubscriptionStatus"],
+                DeviceStatus = httpWebResponse.Headers["X-DeviceConnectionStatus"],
+                StatusCode = httpWebResponse.StatusCode,
+                Response = httpWebResponse
             };
         }
 
         private void BuildRequest(string urlToNotify)
         {
-            request = (HttpWebRequest) WebRequest.Create(urlToNotify);
+            request = (HttpWebRequest)WebRequest.Create(urlToNotify);
             request.Method = "POST";
 
             request.ContentType = "text/xml";

@@ -12,5 +12,6 @@ namespace WindowsPhoneNotificator
         public string ChannelStatus { get; set; }
         public string DeviceStatus { get; set; }
         public HttpWebResponse Response { get; set; }
+        public HttpStatusCode StatusCode { get; set; }
     }
 }
